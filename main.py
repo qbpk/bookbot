@@ -1,16 +1,35 @@
-def main():   
-    book = book_stored("books/frankenstein.txt")
-    num_words = book_word_counter(book)
-    character_counts = book_character_counts(book)
-    print(book)
-    print(num_words)
-    print(character_counts)
+def main():
+    path_file_source = input("Please enter the filepath of the desired book: ")
+    book_text_string = book_stored(path_file_source)
+    num_words = book_word_counter(book_text_string)
+    character_counts = book_character_counts(book_text_string)
+    abclist = list_of_dict_charCount_pairs(character_counts)
+    #abclist.sort(reverse=True, key=sort_on)
+    #print(book_text_string)
+    #print(num_words)
+    #print(character_counts)
+    #print(f"--- Beginning report on {path_file_source} ---")
+    #print(f"{num_words} words found in document!\n")
+    formated_report_output(abclist, path_file_source, num_words)
+    #abclist.sort(reverse=True, key=sort_on)
+    #print(abclist)
+    
+    #print(abclist)
+    #print(character_counts)
+    #print(list_of_abc_char_counts)
 
+def sort_on(dict):
+    return dict['count']
 #takes the file path of where the book is stored as a string
 #returns contents of book as a string
+##added exception case for user input if file/directory not found
 def book_stored(book_path):
-    with open(book_path) as f:
-        book_contents = f.read()
+    try:
+        with open(book_path) as f:
+            book_contents = f.read()
+    except FileNotFoundError:
+        print(f"No such file or directory: {book_path}")
+        exit()
     return book_contents
 
 #takes a string containing contents of a book and returns an 
@@ -32,5 +51,28 @@ def book_character_counts(book_text):
         else:
             character_count[character] = 1
     return character_count
+
+def list_of_dict_charCount_pairs(book_text):
+    list_of_abc_char_counts = []
+    for key in book_text:
+        if key.isalpha():
+            #print(key)
+            #print(character_counts[key])
+            list_of_abc_char_counts.append({'char': key, 'count': book_text[key]})
+            #print(list_of_abc_char_counts)
+            #exit()
+    return list_of_abc_char_counts
+
+def sort_on(dict):
+    return dict['count']
+
+def formated_report_output(list, filepath, wordcount):
+    print(f"--- Beginning report on {filepath} ---")
+    print(f"\n{wordcount} words found in document!\n")
+    list.sort(reverse=True, key=sort_on)
+    for value in list:
+        #print(value)
+        print(f"The '{value['char']}' character was found {value['count']} times")
+    print('\n--- End report ---')
 
 main()
