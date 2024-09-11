@@ -4,26 +4,12 @@ def main():
     num_words = book_word_counter(book_text_string)
     character_counts = book_character_counts(book_text_string)
     abclist = list_of_dict_charCount_pairs(character_counts)
-    #abclist.sort(reverse=True, key=sort_on)
-    #print(book_text_string)
-    #print(num_words)
-    #print(character_counts)
-    #print(f"--- Beginning report on {path_file_source} ---")
-    #print(f"{num_words} words found in document!\n")
     formated_report_output(abclist, path_file_source, num_words)
-    #abclist.sort(reverse=True, key=sort_on)
-    #print(abclist)
-    
-    #print(abclist)
-    #print(character_counts)
-    #print(list_of_abc_char_counts)
 
-def sort_on(dict):
-    return dict['count']
-#takes the file path of where the book is stored as a string
-#returns contents of book as a string
-##added exception case for user input if file/directory not found
 def book_stored(book_path):
+    '''Takes the file path of where the text file is stored as a user input string and opens
+    the file reading it into a string that gets returned if the user input did not encounter 
+    an error. If user input is invalid an error message is displayed and the program is exited.'''
     try:
         with open(book_path) as f:
             book_contents = f.read()
@@ -44,7 +30,6 @@ def book_word_counter(book_text):
 def book_character_counts(book_text):
     character_count = {}
     lc_book_text = book_text.lower()
-    #text_of_characters = list(lc_book_text) --> this was not needed. Redundant!
     for character in lc_book_text:
         if character in character_count:
             character_count[character] += 1 
@@ -56,11 +41,7 @@ def list_of_dict_charCount_pairs(book_text):
     list_of_abc_char_counts = []
     for key in book_text:
         if key.isalpha():
-            #print(key)
-            #print(character_counts[key])
             list_of_abc_char_counts.append({'char': key, 'count': book_text[key]})
-            #print(list_of_abc_char_counts)
-            #exit()
     return list_of_abc_char_counts
 
 def sort_on(dict):
